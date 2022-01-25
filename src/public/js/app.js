@@ -1,15 +1,27 @@
 const socket = io()
-const welcome = document.querySelector('#welcome')
+const byeBtn = document.querySelector('#byeBtn')
+const welcomeBtn = document.querySelector('#welcomeBtn')
 const form = welcome.querySelector('form')
-
+const room = document.querySelector('#room')
 function handleRoomSubmit(event) {
   event.preventDefault()
   const input = form.querySelector('input')
 
-  socket.emit('room', { payload: input.value }, 5, 'heloo', 41531, true, () => {
-    console.log('server is done !')
+  socket.emit('enter_room', input.value, (msg) => {
+    alert(`${msg}`)
   })
   input.value = ''
 }
 
-form.addEventListener('submit', handleRoomSubmit)
+function handleOutRoomSubmit(event) {
+  event.preventDefault()
+  const input = form.querySelector('input')
+
+  socket.emit('out_room', input.value, (msg) => {
+    alert(`${msg}`)
+  })
+  input.value = ''
+}
+
+welcomeBtn.addEventListener('click', handleRoomSubmit)
+byeBtn.addEventListener('click', handleOutRoomSubmit)

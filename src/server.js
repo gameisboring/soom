@@ -23,39 +23,21 @@ const httpServer = http.createServer(app)
 const wsServer = SocketIO(httpServer)
 
 wsServer.on('connection', (socket) => {
-  socket.on('room', (a, b, c, d, e, done) => {
-    console.log(a, b, c, d, e)
-    setTimeout(() => {
-      done()
-    }, 1000)
+  socket.onAny((event) => {
+    console.log(`Socket Event : ${event}`)
+  })
+  socket.on('enter_room', (roomName, done) => {
+    console.log(socket.rooms)
+    socket.join(roomName)
+    console.log(socket.rooms)
+    done(`Hi ${roomName} !`)
+  })
+  socket.on('out_room', (roomName, done) => {
+    console.log(socket.rooms)
+    socket.leave(roomName)
+    console.log(socket.rooms)
+    done(`Bye ${roomName} !`)
   })
 })
-/* const sockets = []
-
-const wss = new WebSocket.Server({ server })
-
-wss.on('connection', (socket) => {
-  sockets.push(socket)
-  socket['nickname'] = 'Anonymous'
-  console.log('Connected to Browser ✅')
-  socket.on('message', (message) => {
-    const { type, payload } = JSON.parse(message)
-    switch (type) {
-      case 'message':
-        sockets.forEach((aSocket) =>
-          aSocket.send(`${socket.nickname} : ${payload}`)
-        )
-        break
-      case 'nickname':
-        socket['nickname'] = payload
-        break
-      default:
-        console.log('wrong type')
-    }
-  })
-  socket.on('close', () => {
-    console.log('Disconnected from Browser ❌')
-  })
-}) */
 
 httpServer.listen(3000, handleListen)
