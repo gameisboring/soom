@@ -27,17 +27,21 @@ wsServer.on('connection', (socket) => {
     console.log(`Socket Event : ${event}`)
   })
   socket.on('enter_room', (roomName, done) => {
-    console.log(socket.rooms)
     socket.join(roomName)
-    console.log(socket.rooms)
-    done(`Hi ${roomName} !`)
+    done()
+    socket.to(roomName).emit('welcome')
   })
   socket.on('out_room', (roomName, done) => {
-    console.log(socket.rooms)
     socket.leave(roomName)
-    console.log(socket.rooms)
-    done(`Bye ${roomName} !`)
+    done()
   })
+  socket.on('disconnecting', () => {
+    socket.rooms.forEach((room) => {
+      socket.to(room).emit('bye')
+    })
+  })
+
+  socket.on('send_message')
 })
 
 httpServer.listen(3000, handleListen)
