@@ -14,11 +14,12 @@ html(lang="en")
                 form
                     input(type="text",placeholder="room name",required)
                     button#welcomeBtn Enter Room
-                    button#byeBtn(style="margin-left : 1rem") out Room
             #room
+                h3
                 ul
                 form
                     input(type="text",placeholder="message",required)
                     button#sendBtn Send          
+                    button#byeBtn(style="margin-left : 1rem") out Room
         script(src="/socket.io/socket.io.js") 
         script(src="/public/js/app.js") 
